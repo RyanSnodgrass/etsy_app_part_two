@@ -51,9 +51,17 @@ run `bundle install` and then
 ```ruby
 rails generate devise:install
 ```
-Which installs an initialler and spits out a list of all of devises configuration options. Go through them and make sure you follow them.
+Which installs an initialler and spits out a list of all of devises configuration options. Go through them and make sure you follow them.  
+I already have the default root page.  
+I did have to copy `config.action_mailer.default_url_options = { host: 'localhost:3000' }` 
+and `<p class="notice"><%= notice %></p>`
+     `<p class="alert"><%= alert %></p>`
 
 After that run
 ```ruby
 rails generate devise USER
+```
+Then so we can see what we're working with
+```ruby
+rails g devise:views
 ```
