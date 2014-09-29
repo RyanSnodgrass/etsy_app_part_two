@@ -1,6 +1,6 @@
 About
 ===
-Built to test my skills in external API integration
+Built to test my skills in external API integration. I'm going to redo a project from The Iron Yard and build an app that integrates [Etsy](www.etsy.com)'s API that lets users log in, create wishlists, and add items from etsy into that wishlist. Maybe if I'm crazy enough, I'll try posting it to facebook.
 
 Development
 ===
