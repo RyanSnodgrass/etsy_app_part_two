@@ -1,14 +1,15 @@
 %h2 Here is a list of your Wishlists
 %br
-- @wishlists.each do |w|
-  =w.title
-  %br
-  = link_to "show", user_wishlist_path(current_user.id, w)
-  %br
-  = w.description
-  %br
-  = button_to "Destroy", {:controller => :wishlists, :action => 'destroy', :id => w.id }, :method => :delete, data: { confirm: "Are you sure?" }
-  
-  %br
+%ol
+  - @wishlists.each do |w|
+    %li
+      =w.title
+      %br
+      = link_to "show", user_wishlist_path(current_user.id, w)
+      %br
+      = w.description
+      %br
+      = button_to "Destroy", {:controller => :wishlists, :action => 'destroy', :id => w.id }, :method => :delete, data: { confirm: "Are you sure?" }
+      %br
 %br
 = link_to "Create New Wishlist", new_user_wishlist_path

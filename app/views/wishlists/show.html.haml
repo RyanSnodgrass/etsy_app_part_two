@@ -1,8 +1,16 @@
 %h2= @wishlist.title
 %br
-- @items.each do |i|
-  = i.name
-  %br
+%ol
+  - @items.each do |i|
+    %li= i.name
+    %br
+%br
+%br
+= form_for @item do |f|
+  = f.label :name
+  = f.text_field :name
+  = f.hidden_field :wishlist_id
+  = f.submit
 %br
 = link_to "Back", user_wishlists_path(current_user)
 

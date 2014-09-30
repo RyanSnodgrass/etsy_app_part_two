@@ -10,6 +10,8 @@ Rails.application.routes.draw do
       resources :items, shallow: true
     end
   end
+
+  resources :items, only: :create
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

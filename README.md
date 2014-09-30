@@ -253,7 +253,7 @@ Back in the view.
 
 Hurray! We now have wishlists creating and deleting. Now onto creating items.
 
-###Items
+###Items Table
 
 We first need to create a table and associations. I will eventually want to save pics of items from Etsy into the DB, but thats for a later phase as it involves working with the wonky paperclip or finicky carrierwave.  
 For now just generate a simple table
@@ -407,3 +407,61 @@ Create a show page for the wishlist
 %br
 = link_to "Back", user_wishlists_path(current_user)
 ```
+
+I had already created some dummy Item data and going to the show page tells me that my items are showing currectly. Huzzah!
+
+---
+
+#### Items Creating
+
+Lets get the items creating. Because I know I'm eventually going to grab the url from etsy and put it into an input box, I'm only going to create an item with just the name.
+
+First we need to update the routes. This will probably not be necessary as I become a better coder. But, for now, This makes things easier.
+```ruby
+# config/routes.rb
+resources :items, only: :create
+```
+
+Then the view side. This should be fairly straightforward by now.
+```haml
+/ app/views/wishlists/show.html.haml
+%h2= @wishlist.title
+%br
+%ol
+  - @items.each do |i|
+    %li= i.name
+    %br
+%br
+%br
+= form_for @item do |f|
+  = f.label :name
+  = f.text_field :name
+  = f.hidden_field :wishlist_id
+  = f.submit
+%br
+= link_to "Back", user_wishlists_path(current_user)
+```
+What's happening here is that the `@item` variable already has it's `wishlist_id` defined when its sent up from the controller. By only having a single argument in the `= form_for @item do |f|`, Rails looks for a single `items_path` that doesn't exist cause we defined it as a nested resource earlier. I like it better this way so far because it seems easier than also defining the `current_user.id`, `@wishlist.id`, and the new `@item` in the `form_for` arguments.
+
+
+Finally the Item controller needs a quick updating.
+```ruby
+# app/controllers/items_controller.rb
+  def create
+    # debugger
+    @item = Item.new(item_params)
+    if @item.save
+      redirect_to user_wishlist_path(current_user.id, @item.wishlist_id), notice: "Item Created"
+    else
+      redirect_to :back, notice: "Error"
+    end
+  end
+```
+
+Hurray! We now have our item creating.
+
+---
+
+#### Items Deleting
+
+Should be, again, straightforward by now. 

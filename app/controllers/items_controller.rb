@@ -14,13 +14,14 @@ class ItemsController < ApplicationController
   end
 
   def new
-    @item = Item.new
+    # @item = 
   end
 
   def create
+    # debugger
     @item = Item.new(item_params)
     if @item.save
-      redirect_to user_wishlist_path(params[:id]), notice: "Item Created"
+      redirect_to user_wishlist_path(current_user.id, @item.wishlist_id), notice: "Item Created"
     else
       redirect_to :back, notice: "Error"
     end
