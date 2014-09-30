@@ -1,9 +1,9 @@
-class WishlistsController < ActiveRecord::Base
+class WishlistsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_wishlist, only:[:show, :edit, :update, :destroy]
   
   def index
-    @wishlists = Wishlist.all
+    @wishlists = current_user.wishlists.all
   end
 
   def show
@@ -12,10 +12,14 @@ class WishlistsController < ActiveRecord::Base
   def edit
   end
 
+  def new
+    @wishlist = current_user.wishlists.new
+  end
+
   def create
-    @new_wishlist = Wishlist.new(wishlist_params)
-    if @new_wishlist.save
-      redirect_to :index
+    @wishlist = current_user.wishlists.build(wishlist_params)
+    if @wishlist.save
+      redirect_to user_wishlists_path(current_user)
     else
       redirect_to :back
     end
@@ -42,6 +46,6 @@ class WishlistsController < ActiveRecord::Base
   end
 
   def wishlist_params
-    params.require(:wishlists).permit(:title, :description, :user)
-
+    params.require(:wishlist).permit(:title, :description, :user_id)
+  end
 end

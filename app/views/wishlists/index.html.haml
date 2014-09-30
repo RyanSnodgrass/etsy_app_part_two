@@ -1,0 +1,10 @@
+Here is a list of your Wishlists
+%br
+- @wishlists.each do |w|
+  =w.title
+  %br
+  = w.description
+  %br
+  %br
+%br
+= link_to "Create New Wishlist", new_user_wishlist_path

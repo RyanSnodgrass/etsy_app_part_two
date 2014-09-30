@@ -12,4 +12,6 @@
       = link_to "Sign up", new_user_registration_path, :class => 'navbar-link'
     %li
       = link_to "Login", new_user_session_path, :class => 'navbar-link'
-Hello World
+
+- if user_signed_in?
+  = link_to "See your Wishlists", user_wishlists_path(current_user)
