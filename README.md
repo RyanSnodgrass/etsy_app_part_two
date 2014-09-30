@@ -72,16 +72,16 @@ In a previous [app](https://github.com/RyanSnodgrass/notredame_club_membership_a
 ```haml
 / make sure to rename the extension from erb to haml
 / app/views/layouts/application.html.haml
-  %body
-    - if notice != nil
-      %p.notice= notice
-    - if alert != nil       
-      %p.alert= alert
+%body
+  - if notice != nil
+    %p.notice= notice
+  - if alert != nil       
+    %p.alert= alert
 
-    = yield
-    %br
-    - unless request.env['PATH_INFO']  == "/"
-      = link_to "Go Back Home", root_path, :class => 'navbar-link'
+  = yield
+  %br
+  - unless request.env['PATH_INFO']  == "/"
+    = link_to "Go Back Home", root_path, :class => 'navbar-link'
 ```
 ```haml
 / app/views/home/index.html.haml
@@ -99,5 +99,10 @@ In a previous [app](https://github.com/RyanSnodgrass/notredame_club_membership_a
       = link_to "Sign up", new_user_registration_path, :class => 'navbar-link'
     %li
       = link_to "Login", new_user_session_path, :class => 'navbar-link'
-Hello World
+Welcome to Etsy Wishlist App. Please sign up or register!
 ```
+
+Hurray! Users are now registering and signing in.
+
+### Wishlist Table
+I want users to create wishlists and have those wishlists belong to only those users. The data modeling should be fairly straight forward.
