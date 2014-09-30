@@ -7,6 +7,7 @@ class WishlistsController < ApplicationController
   end
 
   def show
+    @items = @wishlist.items
   end
 
   def edit

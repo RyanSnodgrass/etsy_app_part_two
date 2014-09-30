@@ -1,0 +1,8 @@
+%h2= @wishlist.title
+%br
+- @items.each do |i|
+  = i.name
+  %br
+%br
+= link_to "Back", user_wishlists_path(current_user)
+

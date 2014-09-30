@@ -1,7 +1,9 @@
-Here is a list of your Wishlists
+%h2 Here is a list of your Wishlists
 %br
 - @wishlists.each do |w|
   =w.title
+  %br
+  = link_to "show", user_wishlist_path(current_user.id, w)
   %br
   = w.description
   %br

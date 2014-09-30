@@ -365,3 +365,44 @@ class ItemsController < ApplicationController
 
 end
 ```
+
+And then onto the view. Instead of having seperate page views for all of create edit and so on, I want to see a list of all my items on a wishlist show page. First create a link_to show the wishlist
+```haml
+/ app/views/wishlists/index.html.haml
+Here is a list of your Wishlists
+%br
+- @wishlists.each do |w|
+  =w.title
+  %br
+  = link_to "show", user_wishlist_path(current_user.id, w)
+  %br
+  = w.description
+  %br
+  = button_to "Destroy", {:controller => :wishlists, :action => 'destroy', :id => w.id }, :method => :delete, data: { confirm: "Are you sure?" }
+```
+
+Now there's two ways we can show the items for each wishlist.  
+
+1. In the view layer we can act on `@wishlist.items` for all our interaction
+2. Or down in the controller we can predefine the wishlists items in the show method.
+
+I like the second option as it keeps more logic away from the view layer.
+
+First update the controller
+```ruby
+# app/controllers/wishlists_controller.rb
+  def show
+    @items = @wishlist.items
+  end
+```
+Create a show page for the wishlist
+```haml
+/ app/views/wishlists/show.html.haml
+%h2= @wishlist.title
+%br
+- @items.each do |i|
+  = i.name
+  %br
+%br
+= link_to "Back", user_wishlists_path(current_user)
+```
