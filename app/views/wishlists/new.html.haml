@@ -1,0 +1,12 @@
+= form_for [current_user, @wishlist] do |f|
+  = f.label :title
+  %br
+  = f.text_field :title
+  %br
+  = f.label :description
+  %br
+  = f.text_area :description
+  %br
+  = f.submit
+%br
+= link_to "Back", user_wishlists_path(current_user)
