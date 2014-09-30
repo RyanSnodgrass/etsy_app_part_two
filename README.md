@@ -302,4 +302,66 @@ end
 
 Today I learned that you don't have to associate back up the table records. I thought I had to have a `belongs_to :user, through: :wishlist` line in the item table. Looking through the [ruby guides](http://guides.rubyonrails.org/association_basics.html#the-has-many-through-association) again I realize that rails knows the association automatically.
 
-Create the resources routes. According to again [ruby guides](http://guides.rubyonrails.org/routing.html#limits-to-nesting), it is bad practice to have deeply nested resources as the corresponding url path helpers become cumbersome. For this example lets try a new method for me, `shallow: true`
+Create the resources routes. According to again [ruby guides](http://guides.rubyonrails.org/routing.html#limits-to-nesting), it is bad practice to have deeply nested resources as the corresponding url path helpers become cumbersome. For this example let's try a new method for me: `shallow: true`
+
+```ruby
+# config/routes.rb
+resources :users do
+  resources :wishlists do
+    resources :items, shallow: true
+  end
+end
+```
+Which generates these routes automatically like so
+```ruby
+resources :users do
+  resources :wishlists do 
+    resources :items, only: [:index, :new, :create]
+  end
+end
+resources :items, only: [:show, :edit, :update, :destroy]
+```
+But in fewer lines of code. Remember kids: fewer lines of code = good!
+
+Now onto the controller. First let's just get items creating
+# app/controllers/items_controller.rb
+class ItemsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_item, only: [:show, :edit, :update, :destroy]
+
+  # I might need a page that shows all of a users current items accross all wishlists
+  def index    
+    @items = current_user.items.all
+  end
+
+  def show
+  end
+
+  def edit
+  end
+
+  def new
+    @item = Item.new
+  end
+
+  def create
+    @item = Item.new(item_params)
+    if @item.save
+      redirect_to user_wishlist_path(params[:id]), notice: "Item Created"
+    else
+      redirect_to :back, notice: "Error"
+    end
+  end
+
+  private
+
+  def set_item
+    @item = Item.find(params[:id])
+  end
+
+  def item_params
+    params.require(:item).permit(:name, :description, :cost, :wishlist_id)
+  end
+
+end
+```
