@@ -464,4 +464,37 @@ Hurray! We now have our item creating.
 
 #### Items Deleting
 
-Should be, again, straightforward by now. 
+Should be, again, straightforward by now.  
+
+Update your routes again
+```ruby
+# config/routes.rb
+resources :items, only: [:create, :destroy]
+```
+
+In the view
+```haml
+/ ap/views/wishlists/show.html.haml
+- @items.each do |i|
+  %li
+    =i.name
+    %br
+    = button_to "Remove", {:controller => :items, :action => 'destroy', :id => "#{i.id}" }, :method => :delete, data: { confirm: "Are you sure?" }
+```
+This was odd. The string `:id => "#{i.id}"` was the only way that was working. Surprisingly, a simple integer `i.id` was giving the `user_id` and erroring out. I'll have to figure out why that is later.
+
+Then finally lets put in a destroy method in the controller
+```ruby
+# app/controllers/items_controller.rb
+def destroy
+  @item.destroy
+  redirect_to :back
+end
+```
+
+Great! Items are creating and deleting.  
+
+We are now ready to takle API integration for Etsy.
+
+ETSY
+---

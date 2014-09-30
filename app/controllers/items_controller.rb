@@ -27,6 +27,13 @@ class ItemsController < ApplicationController
     end
   end
 
+  def destroy
+    @item.destroy
+    redirect_to :back, notice: "Item Removed"
+  end
+
+    # user_wishlist_path(current_user.id, @item.wishlist_id), notice: "Item Created"
+
   private
 
   def set_item

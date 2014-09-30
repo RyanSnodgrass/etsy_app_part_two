@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :items, only: :create
+  resources :items, only: [:create, :destroy]
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

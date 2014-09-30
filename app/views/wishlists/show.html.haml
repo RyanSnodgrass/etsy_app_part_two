@@ -1,9 +1,13 @@
 %h2= @wishlist.title
 %br
+
 %ol
   - @items.each do |i|
-    %li= i.name
-    %br
+    %li
+      =i.name
+      %br
+      = button_to "Remove", {:controller => :items, :action => 'destroy', :id => "#{i.id}" }, :method => :delete, data: { confirm: "Are you sure?" }
+    / %br
 %br
 %br
 = form_for @item do |f|
