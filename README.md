@@ -255,6 +255,51 @@ Hurray! We now have wishlists creating and deleting. Now onto creating items.
 
 ###Items
 
-We first need to create a table and associations.
+We first need to create a table and associations. I will eventually want to save pics of items from Etsy into the DB, but thats for a later phase as it involves working with the wonky paperclip or finicky carrierwave.  
+For now just generate a simple table
 ```ruby
-rails g migration CreateItems
+rails g migration CreateItems name:string description:text cost:decimal wishlist:belongs_to
+```
+And again check the generated migration file
+```ruby
+# db/migrate/20140930155536_create_items.rb
+class CreateItems < ActiveRecord::Migration
+  def change
+    create_table   :items do |t|
+      t.string     :name
+      t.text       :description
+      t.decimal    :cost
+      t.belongs_to :wishlist, index: true
+    end
+  end
+end
+```
+Looks good. `rake db:migrate`
+
+Create the model
+```ruby
+# app/models/item.rb
+class Item < ActiveRecord::Base
+  belongs_to :wishlist
+end
+```
+And the associtations necessary.
+```ruby
+# app/models/wishlist.rb
+class Wishlist < ActiveRecord::Base
+  belongs_to :user
+  has_many   :items
+end
+
+# app/models/user.rb
+class User < ActiveRecord::Base
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
+  has_many :wishlists
+  has_many :items, through: :wishlists
+end
+```
+
+Today I learned that you don't have to associate back up the table records. I thought I had to have a `belongs_to :user, through: :wishlist` line in the item table. Looking through the [ruby guides](http://guides.rubyonrails.org/association_basics.html#the-has-many-through-association) again I realize that rails knows the association automatically.
+
+Create the resources routes. According to again [ruby guides](http://guides.rubyonrails.org/routing.html#limits-to-nesting), it is bad practice to have deeply nested resources as the corresponding url path helpers become cumbersome. For this example lets try a new method for me, `shallow: true`
