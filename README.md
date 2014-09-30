@@ -105,4 +105,34 @@ Welcome to Etsy Wishlist App. Please sign up or register!
 Hurray! Users are now registering and signing in.
 
 ### Wishlist Table
-I want users to create wishlists and have those wishlists belong to only those users. The data modeling should be fairly straight forward.
+I want users to create wishlists and have those wishlists belong to only those users. The items coming from Etsy will be included later when I both know more and figure out how to get the information into the DB.
+
+For now, the data modeling should be fairly straight forward. I just want a page for users to create and view their own wishlists.
+
+First run the migration command
+```ruby
+rails g migration CreateWishlists title:string description:text total_cost:decimal user:belongs_to
+```
+And always double check the auto generated migration file
+```ruby
+class CreateWishlists < ActiveRecord::Migration
+  def change
+    create_table   :wishlists do |t|
+      t.string     :title
+      t.text       :description
+      t.decimal    :total_cost
+      t.belongs_to :user, index: true
+    end
+  end
+end
+```
+
+Looks good. Run `rake db:migrate`  
+Create the model
+```ruby
+# app/models/wishlist.rb
+class Wishlist < ActiveRecord::Base
+  belongs_to :user
+end
+```
+
