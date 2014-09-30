@@ -324,6 +324,7 @@ resources :items, only: [:show, :edit, :update, :destroy]
 But in fewer lines of code. Remember kids: fewer lines of code = good!
 
 Now onto the controller. First let's just get items creating
+```ruby
 # app/controllers/items_controller.rb
 class ItemsController < ApplicationController
   before_action :authenticate_user!
