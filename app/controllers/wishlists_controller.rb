@@ -35,7 +35,7 @@ class WishlistsController < ApplicationController
 
   def destroy
     @wishlist.destroy
-    redirect_to :index
+    redirect_to user_wishlists_path
   end
 
 

@@ -5,6 +5,8 @@
   %br
   = f.label :description
   %br
-  = f.text_field :description
+  = f.text_area :description
   %br
   = f.submit
+%br
+= link_to "Back", user_wishlists_path(current_user)

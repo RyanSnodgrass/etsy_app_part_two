@@ -182,7 +182,7 @@ class WishlistsController < ApplicationController
 
   def destroy
     @wishlist.destroy
-    redirect_to :index
+    redirect_to user_wishlists_path
   end
 
 
@@ -227,7 +227,34 @@ Here is a list of your Wishlists
   %br
   = f.label :description
   %br
-  = f.text_field :description
+  = f.text_area :description
   %br
   = f.submit
+%br
+= link_to "Back", user_wishlists_path(current_user)
 ```
+
+Great. Wishlists are now creating.
+
+---
+
+Let's quickly get them to delete now. I'm being very explicit with this and I'm sure there's a more "Rails" way of doing this.
+
+Back in the view.
+```haml
+/ app/views/wishlists/index.html.haml
+- @wishlists.each do |w|
+  =w.title
+  %br
+  = w.description
+  %br
+  = button_to "Destroy", {:controller => :wishlists, :action => 'destroy', :id => w.id }, :method => :delete, data: { confirm: "Are you sure?" }
+```
+
+Hurray! We now have wishlists creating and deleting. Now onto creating items.
+
+###Items
+
+We first need to create a table and associations.
+```ruby
+rails g migration CreateItems
