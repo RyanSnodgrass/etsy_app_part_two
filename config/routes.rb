@@ -6,8 +6,12 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'home#index'
   resources :users do
-    resources :wishlists
+    resources :wishlists do
+      resources :items, shallow: true
+    end
   end
+
+  resources :items, only: [:create, :destroy]
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

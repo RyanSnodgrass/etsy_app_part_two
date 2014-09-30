@@ -7,6 +7,8 @@ class WishlistsController < ApplicationController
   end
 
   def show
+    @items = @wishlist.items
+    @item = @wishlist.items.new
   end
 
   def edit
@@ -17,6 +19,7 @@ class WishlistsController < ApplicationController
   end
 
   def create
+
     @wishlist = current_user.wishlists.build(wishlist_params)
     if @wishlist.save
       redirect_to user_wishlists_path(current_user)
