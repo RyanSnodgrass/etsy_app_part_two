@@ -105,7 +105,7 @@ Welcome to Etsy Wishlist App. Please sign up or register!
 Hurray! Users are now registering and signing in.
 
 ### Wishlist Table
-I want users to create wishlists and have those wishlists belong to only those users. The items coming from Etsy will be included later when I both know more and figure out how to get the information into the DB.
+I want users to create wishlists and have those wishlists belong to only those users. The items coming from Etsy will be included later when I both know more and figure out how to get the information into the DB. I will eventually want these items coming into the DB as their own table and associating with wishlists.
 
 For now, the data modeling should be fairly straight forward. I just want a page for users to create and view their own wishlists.
 
@@ -135,4 +135,57 @@ class Wishlist < ActiveRecord::Base
   belongs_to :user
 end
 ```
+Then create the controller. This will change as we go on.
+```ruby
+class WishlistsController < ActiveRecord::Base
+  before_action :authenticate_user!
+  before_action :set_wishlist, only:[:show, :edit, :update, :destroy]
+  
+  def index
+    @wishlists = Wishlist.all
+  end
 
+  def show
+  end
+
+  def edit
+  end
+
+  def create
+    @new_wishlist = Wishlist.new(wishlist_params)
+    if @new_wishlist.save
+      redirect_to :index
+    else
+      redirect_to :back
+    end
+  end
+
+  def update
+    if @wishlist.update(wishlist_params)
+      redirect_to :show, notice: 'Wishlist was successfully updated.'
+    else
+      redirect_to :back
+    end
+  end
+
+  def destroy
+    @wishlist.destroy
+    redirect_to :index
+  end
+
+
+  private
+
+  def set_wishlist
+    @wishlist = Wishlist.find(params[:id])
+  end
+
+  def wishlist_params
+    params.require(:wishlists).permit(:title, :description, :user)
+
+end
+```
+
+Now finally, the view
+```haml
+/ app/views/wishlists/index.html.haml
