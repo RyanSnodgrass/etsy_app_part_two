@@ -65,3 +65,39 @@ Then so we can see what we're working with
 ```ruby
 rails g devise:views
 ```
+
+All this generates a lot of stuff. But, for now we just want to keep things simple so we can start working on the APIs. Devise has generated a migration file for us. We can leave it alone for now. Once I know more about my app, I might add in the user's name and such so let's run `rake db:migrate`. 
+
+In a previous [app](https://github.com/RyanSnodgrass/notredame_club_membership_app) I built, I thought Devise had some sort of generator that I couldn't find in time to hook everything into the home page. I am now under the impression this is half true. Devise does generate everything- registration, sign in, password reset - you just have to hook everything into the devise controller. I swear there was a generator and I've been looking over the docs as best I can. Maybe I'm just not seeing it. Anyway, the links I want to copy over from the old app are as follows
+```haml
+/ make sure to rename the extension from erb to haml
+/ app/views/layouts/application.html.haml
+  %body
+    - if notice != nil
+      %p.notice= notice
+    - if alert != nil       
+      %p.alert= alert
+
+    = yield
+    %br
+    - unless request.env['PATH_INFO']  == "/"
+      = link_to "Go Back Home", root_path, :class => 'navbar-link'
+```
+```haml
+/ app/views/home/index.html.haml
+%ul
+  - if user_signed_in?
+    %li
+      %a{href: edit_user_registration_path} Edit Profile
+    %li
+      = link_to "Logout", destroy_user_session_path, method: :delete, :class => 'smoothscroll'
+    %li
+      %h4
+        Logged in as #{current_user.email}
+  - else
+    %li
+      = link_to "Sign up", new_user_registration_path, :class => 'navbar-link'
+    %li
+      = link_to "Login", new_user_session_path, :class => 'navbar-link'
+Hello World
+```
